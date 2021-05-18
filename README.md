@@ -14,9 +14,11 @@ Robin's web app is looking good and functioning well, but she wants to add more 
 
 ###### Deliverable 3: Add Bootstrap 3 Components
 
-### Final Results from deliverables:
+### Final Results displaying mobile responsiveness using bootstrap3.
 
 ![image](https://github.com/antxamp/Mission-to-Mars/blob/main/Resources/mobile_responsive1.png)
+
+
 
 
 ![image](https://github.com/antxamp/Mission-to-Mars/blob/main/Resources/mobile_repsonsive.png)
