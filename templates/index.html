@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Mobile Responsiveness -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Mission to Mars</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Add Jumbotron to Header -->
+      <div class="jumbotron text-center">
+        <h1>Mission to Mars</h1>
+        <!-- Add a button to activate scraping script/ Deliverable 3 Styled button -->
+        <p><a class="btn btn-warning btn-lg active" href="/scrape" role="button">Click to Scrape!</a></p>
+      </div>
+
+      <!-- Add section for Mars News/ Deliverable 3 added gray border -->
+      <div class="row" id="mars-news">
+        <div class="col-md-12">
+          <div class="media">
+            <div class="media-body"style="border-bottom: thin solid rgba(128, 128, 128, 0.515);">
+              <h2 style="font-weight: bold;">Latest Mars News</h2>
+              <h4 class="media-heading">{{ mars.news_title }}</h4>
+              <p>{{ mars.news_paragraph }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section for Featured Image and Facts table -->
+      <div class="row" id="mars-featured-image">
+        <div class="col-md-8">
+          <h2 style="font-weight: bold;">Featured Mars Image</h2>
+          <img
+            src="{{mars.featured_image }}"
+            class="img-responsive"
+            alt="Responsive image"
+          />
+        </div>
+        <div class="col-md-4">
+          <!-- Mars Facts -->
+          <div class="row" id="mars-facts">
+            <h3 style="font-weight: bold;"><p class="text-center">Fun Mars Facts</p></h3>
+            {{ mars.facts | safe }}
+          </div>
+        </div>
+      <!-- Section for Mars Hemisphere Images and Title/ Deliverable 3 used grid-->
+      </div class="row" id='Mars Hemisphere'>
+        <div class ="col-md-12">
+          <h3 style="text-align:center;font-weight: bold;" >Mars Hemispheres</h3>
+      
+            {% for hemisphere in mars.hemisphere %}
+              <div class="col-md-5" style="border: thin solid rgba(128, 128, 128, 0.515);margin: 20px;padding: 5px;">
+                <img
+                src="{{hemisphere['img_url']}}"
+                class="img-responsive"
+                alt="Responsive image"
+                /> 
+                <h4 style="font-weight: bold;">{{hemisphere['title']}}</h4>
+              </div>
+            {% endfor %}
+        </div>
+    </div>
+  </body>
+</html>
