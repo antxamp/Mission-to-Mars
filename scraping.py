@@ -11,13 +11,16 @@ def scrape_all():
     executable_path = {'executable_path': ChromeDriverManager().install()}
     browser = Browser('chrome', **executable_path, headless=True)
 
+    news_title, news_paragraph = mars_news(browser)
+
     # Run all scraping functions and store results in dictionary
     data = {
       "news_title": news_title,
       "news_paragraph": news_paragraph,
       "featured_image": featured_image(browser),
       "facts": mars_facts(),
-      "last_modified": dt.datetime.now()
+      "last_modified": dt.datetime.now(),
+      "hemisphere": mars_hemisphere(browser)
     }
     # Stop webdriver and return data
     browser.quit()
@@ -103,6 +106,55 @@ def mars_facts():
 
     # Convert dataframe into HTML format, add bootstrap
     return df.to_html(classes="table table-striped")
+
+def mars_hemisphere(browser):
+    # create empty list to format dat within
+    hemisphere_image_urls = []
+    base_url = 'https://marshemispheres.com/'
+    
+    # visit the webpage 
+    url = 'https://marshemispheres.com/'
+    browser.visit(url)
+    
+    # parse site 
+    html = browser.html
+    html_soup = soup(html, 'html.parser')
+    # creating variable with tag and attribute which contain all full-resolution images and info needed
+    mars_image_info = html_soup.select('div.description')
+
+    try: 
+        # loop through scraped data, scrape additonal data and format 
+        for i in list(range(len(mars_image_info))):
+        
+            # extracted data and retrieved text header from 'h3'
+            header = mars_image_info[i].find('h3').get_text()
+    
+            # retrieve embedded parital url and convert to full webpage link
+            partial_url = mars_image_info[i].find('a').get('href')
+    
+            # adding the base url with the partial url to make a full link
+            full_link = f'{base_url}{partial_url}'
+    
+            # nested browser visit/clicks on full_link
+            browser.visit(full_link)
+    
+            # parsing html
+            html = browser.html
+            html_soup = soup(html, 'html.parser')
+    
+            # retreive full-resolution images within these listed tags
+            image_url = html_soup.select_one('ul li a').get('href')
+    
+            # adding base url to image url to add in dictionary
+            full_image_url = f'{base_url}{image_url}'
+
+            # format all data into a dictionary 
+            hemisphere_image_urls.append({'img_url':full_image_url,'title':header})
+
+    except AttributeError:
+        return None
+        
+    return hemisphere_image_urls
 
 if __name__ == "__main__":
 
